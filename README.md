@@ -9,7 +9,12 @@ Output is a simple html infrastructure..
 
 ![demo](demo/output_demo.png) 
 
-References:__
-https://socket.io/get-started/chat/__
-https://www.youtube.com/watch?v=tHbCkikFfDE__
-https://www.youtube.com/watch?v=8Y6mWhcdSUM__
+References:
+https://socket.io/get-started/chat/
+
+
+https://www.youtube.com/watch?v=tHbCkikFfDE
+
+
+https://www.youtube.com/watch?v=8Y6mWhcdSUM
+
