@@ -1,5 +1,5 @@
 Update: 20th Oct 2017 10:50 AM <br/>
-Phase 0 Step 1: Simple socket created. <br/>
+Phase 0 Step 2: Simple socket created. <br/>
 
 Server:<br/>
 ![demo](demo/Phase0_Step2_Server_1.png) <br/>
