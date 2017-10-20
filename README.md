@@ -1,20 +1,15 @@
 This is basic premise or infrastructure to start socket.io
 It is doing nothing yet except functionally
 
-Note the way, the server is made this time..A server object is created upfront, because that is also next needed to be used by socket.io module
+Update: 20th Oct 2017 10:50 AM
+Phase 0 Step 1: Simple socket created. 
 
-![demo](demo/app.js_demo.png) 
+Server:
+![demo](demo/Phase0_Step2_Server_1.png) 
+![demo](demo/Phase0_Step2_Server_2.png) 
 
-Output is a simple html infrastructure..
+Client:
+![demo](demo/Phase0_Step2_Client_1.png) 
 
-![demo](demo/output_demo.png) 
-
-References:
-https://socket.io/get-started/chat/
-
-
-https://www.youtube.com/watch?v=tHbCkikFfDE
-
-
-https://www.youtube.com/watch?v=8Y6mWhcdSUM
-
+Demo:
+![demo](demo/Phase0_Step2_Demo.gif) 
