@@ -34,12 +34,35 @@
         </div>
     </div>
 
+    
+    <% include partials/jsincludes.ejs %>  <!-- since we use jquery in socket, this comes first to incldue jquery -->
+
     <!-- Socket IO Client Side Operations -->
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io();
+    <script>        
+      $(document).ready(    //1. When document is ready
+            function()
+            {
+                //2. Initialize socket
+                var socketClient = io();            
+
+                //3. When form button is submitted 
+                $("form").submit(
+                    function()
+                    {
+                        //4. Emit socket with "New Message Event" event name and actual new message
+                        socketClient.emit( "New Message Event", $("#newMessageID").val());
+
+                        //5. Clear the new message in client form to enable user to enter new message
+                        $("#newMessageID").val("");
+
+                        //6. Prevent any default button behaviour further
+                        return false; //also event.preventDefault() would do (if you passed event object in submit's callback function)
+                    }
+                );
+            }
+      );
     </script>
 
-    <% include partials/jsincludes.ejs %>
 </body>
 </html>

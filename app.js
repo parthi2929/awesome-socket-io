@@ -38,6 +38,15 @@ socketServer.on(
     {
         console.log("A new socket connected");
 
+        //5.1.1 RECEIVING EVENT FROM CLIENT
+        socketFromClient.on(
+            "New Message Event",
+            function(newMessage)
+            {
+                console.log("New Message Received from Client: " + newMessage);
+            }
+        );
+
         //5.2 If that user disconnects..
         socketFromClient.on(
             "disconnect",
