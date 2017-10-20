@@ -1,11 +1,11 @@
-This is basic premise or infrastructure to start socket.io__
-It is doing nothing yet except functionally__
+This is basic premise or infrastructure to start socket.io
+It is doing nothing yet except functionally
 
-Note the way, the server is made this time..A server object is created upfront, because that is also next needed to be used by socket.io module__
+Note the way, the server is made this time..A server object is created upfront, because that is also next needed to be used by socket.io module
 
 ![demo](demo/app.js_demo.png) 
 
-Output is a simple html infrastructure..__
+Output is a simple html infrastructure..
 
 ![demo](demo/output_demo.png) 
 
