@@ -9,4 +9,9 @@ Client:<br/>
 ![demo](demo/Phase0_Step2_Client_1.png) <br/>
 
 Demo: <br/>
-![demo](demo/Phase0_Step2_Demo.gif) 
+New page => new socket connected <br/>
+Close page => disconnect socket <br/>
+![demo](demo/Phase0_Step2_Demo.gif) <br/>
+
+Page refresh: socket disconnected and created <br/>
+![demo](demo/Phase0_Step2_Demo_1.gif) <br/>
