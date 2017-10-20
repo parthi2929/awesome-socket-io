@@ -60,6 +60,18 @@
                         return false; //also event.preventDefault() would do (if you passed event object in submit's callback function)
                     }
                 );
+
+                //4. Receive if any broadcast event message from server
+                socketClient.on(
+                    "Broadcast Event",
+                    function(receivedMessage)
+                    {
+                        //4.1 Update received message in our page
+                        var newliElement = $("<li>").text(receivedMessage);     //create a new <li> element
+                        $("#messagesID").append(newliElement);                  //append to ul element in our page
+                    }
+                );    
+
             }
       );
     </script>

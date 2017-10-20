@@ -44,6 +44,10 @@ socketServer.on(
             function(newMessage)
             {
                 console.log("New Message Received from Client: " + newMessage);
+
+                //5.1.2 BROADCAST BACK TO ALL CLIENTS INCL ONE THAT SENT IT
+                socketServer.emit("Broadcast Event", newMessage);
+
             }
         );
 
