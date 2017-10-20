@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title><%=title%></title>
+        <% include partials/head.ejs %>
+        <style>
+            .well
+            {
+                height:300px;
+            }
+        </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-center"><%=headline%></h3>
+
+                <!--Deck to display all messages -->
+                <div class="well">  <!-- well is a bootstrap element -->
+
+                        <ul id="messagesID"></ul>  <!-- element to display messages -->
+
+                </div>
+
+                <!-- Form to enter new message and submit -->
+                <form>
+                    <input id="newMessageID" class="form-control" placeholder="Enter your message"></input>
+                    <br/><br/>
+                    <div class="text-center"><button type="submit"  id="sendButtonID" class="btn btn-primary">Send</button></div>                
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <% include partials/jsincludes.ejs %>
+</body>
+</html>
