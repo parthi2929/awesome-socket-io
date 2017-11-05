@@ -20,7 +20,7 @@ var socketServer = socket.listen(server);
 app.get("/", routes.index);
 
 //4. Create port and listen to server
-var port = process.env.port || 8080;
+var port = process.env.PORT || 8080;
 server.listen(
     port,
     function(request, response)
