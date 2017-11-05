@@ -4,7 +4,7 @@
         <title><%=title%></title>
         <% include partials/head.ejs %>
         <style>
-            .well
+            .card
             {
                 height:300px;
             }
@@ -12,25 +12,12 @@
 </head>
 <body>
     
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="text-center"><%=headline%></h3>
-
-                <!--Deck to display all messages -->
-                <div class="well">  <!-- well is a bootstrap element -->
-
-                        <ul id="messagesID"></ul>  <!-- element to display messages -->
-
-                </div>
-
-                <!-- Form to enter new message and submit -->
-                <form>
-                    <input id="newMessageID" class="form-control" placeholder="Enter your message"></input>
-                    <br/><br/>
-                    <div class="text-center"><button type="submit"  id="sendButtonID" class="btn btn-primary">Send</button></div>                
-                </form>
-            </div>
+    <div class="container-fluid">
+        <div id="userNameWindow" class="row justify-content-center">
+            <% include partials/usernamewindow.ejs %>  
+        </div>        
+        <div id="chatWindow" class="row justify-content-center">         
+            <% include partials/chatwindow.ejs %>           
         </div>
     </div>
 
@@ -38,7 +25,7 @@
     <% include partials/jsincludes.ejs %>  <!-- since we use jquery in socket, this comes first to incldue jquery -->
 
     <!-- Socket IO Client Side Operations -->
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script>        
       $(document).ready(    //1. When document is ready
             function()
@@ -47,7 +34,7 @@
                 var socketClient = io();            
 
                 //3. When form button is submitted 
-                $("form").submit(
+                $("#messageForm").submit(
                     function()
                     {
                         //4. Emit socket with "New Message Event" event name and actual new message
@@ -67,7 +54,7 @@
                     function(receivedMessage)
                     {
                         //4.1 Update received message in our page
-                        var newliElement = $("<li>").text(receivedMessage);     //create a new <li> element
+                        var newliElement = $("<li>", { "class": "list-group-item" }).text(receivedMessage);     
                         $("#messagesID").append(newliElement);                  //append to ul element in our page
                     }
                 );    
