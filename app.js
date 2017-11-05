@@ -31,6 +31,9 @@ server.listen(
 
 //5. SERVER SIDE SOCKET OPERATIONS
 
+// Array to store users' details (his/her sockets?!)
+var usersArray ={};
+
 //5.1 Inform when a socket connects
 socketServer.on(
     "connection",
@@ -46,8 +49,28 @@ socketServer.on(
                 console.log("New Message Received from Client: " + newMessage);
 
                 //5.1.2 BROADCAST BACK TO ALL CLIENTS INCL ONE THAT SENT IT
-                socketServer.emit("Broadcast Event", newMessage);
+                socketServer.emit("Broadcast Event", socketFromClient.userName + " : " + newMessage);
 
+            }
+        );
+
+        //5.1.2 USER NAME VALIDATION
+        socketFromClient.on(
+            "New User Validation Event",
+            function(data,callback) //callback because we need to notify response accordingly
+            {
+                if (data in usersArray)
+                {
+                    console.log("ERROR: Received user name available already");
+                    callback(false);    //already existing name, so error
+                }
+                else
+                {                    
+                    socketFromClient.userName = data;   //yeah, you could create a new property like this by assigning value along.
+                    usersArray[socketFromClient.userName]=socketFromClient; 
+                    console.log("SUCCESS: Received user name registered");
+                    callback(true);     //new name, registerd, good to go..
+                }
             }
         );
 

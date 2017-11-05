@@ -1,0 +1,65 @@
+<!-- Socket IO Client Side Operations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script>        
+  $(document).ready(    //1. When document is ready
+        function()
+        {
+            //2. Initialize 
+            var socketClient = io();            
+            $("#chatWindow").hide();  
+
+            //3. When form button is submitted 
+            $("#messageForm").submit(
+                function()
+                {
+                    //4. Emit socket with "New Message Event" event name and actual new message
+                    socketClient.emit( "New Message Event", $("#newMessageID").val());
+
+                    //5. Clear the new message in client form to enable user to enter new message
+                    $("#newMessageID").val("");
+
+                    //6. Prevent any default button behaviour further
+                    return false; //also event.preventDefault() would do (if you passed event object in submit's callback function)
+                }
+            );
+
+            //4. Receive if any broadcast event message from server
+            socketClient.on(
+                "Broadcast Event",
+                function(receivedMessage)
+                {
+                    //4.1 Update received message in our page
+                    var newliElement = $("<li>", { "class": "list-group-item" }).text(receivedMessage);     
+                    $("#messagesID").append(newliElement);                  //append to ul element in our page
+                }
+            );    
+
+            //5. USER VALIDATION TRIGGER AND RESPONSE FOR SERVER'S RESULT
+            $("#userForm").submit(  //this to happen once user presses submit in user form..
+                function()
+                {
+                    socketClient.emit(
+                        "New User Validation Event",    //agreed event name
+                        $("#userNameID").val(),         //entered user name to be sent
+                        function(validationResult)
+                        {
+                            if (validationResult)   //good to go, show chat window
+                            {
+                                $("#userWindow").hide();    //why would we still ask him another user name
+                                $("#chatWindow").show();                                    
+                                console.log("New user name registered");
+                            }
+                            else
+                            {
+                                $("#userNameError").html("Sorry. User Name exists. Try another one");
+                            }                        
+                        }
+                    );
+                    $("#userNameID").val("");
+                    return false;
+                }                    
+            );    
+
+        }
+  );
+</script>

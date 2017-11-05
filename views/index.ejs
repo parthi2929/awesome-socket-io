@@ -6,62 +6,24 @@
         <style>
             .card
             {
-                height:300px;
+                height:200px;
             }
         </style>
 </head>
 <body>
     
     <div class="container-fluid">
-        <div id="userNameWindow" class="row justify-content-center">
+
             <% include partials/usernamewindow.ejs %>  
-        </div>        
-        <div id="chatWindow" class="row justify-content-center">         
+
             <% include partials/chatwindow.ejs %>           
-        </div>
+
     </div>
 
     
     <% include partials/jsincludes.ejs %>  <!-- since we use jquery in socket, this comes first to incldue jquery -->
 
-    <!-- Socket IO Client Side Operations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-    <script>        
-      $(document).ready(    //1. When document is ready
-            function()
-            {
-                //2. Initialize socket
-                var socketClient = io();            
-
-                //3. When form button is submitted 
-                $("#messageForm").submit(
-                    function()
-                    {
-                        //4. Emit socket with "New Message Event" event name and actual new message
-                        socketClient.emit( "New Message Event", $("#newMessageID").val());
-
-                        //5. Clear the new message in client form to enable user to enter new message
-                        $("#newMessageID").val("");
-
-                        //6. Prevent any default button behaviour further
-                        return false; //also event.preventDefault() would do (if you passed event object in submit's callback function)
-                    }
-                );
-
-                //4. Receive if any broadcast event message from server
-                socketClient.on(
-                    "Broadcast Event",
-                    function(receivedMessage)
-                    {
-                        //4.1 Update received message in our page
-                        var newliElement = $("<li>", { "class": "list-group-item" }).text(receivedMessage);     
-                        $("#messagesID").append(newliElement);                  //append to ul element in our page
-                    }
-                );    
-
-            }
-      );
-    </script>
+    <% include partials/socketscript.ejs %>
 
 </body>
 </html>
