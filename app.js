@@ -65,11 +65,12 @@ socketServer.on(
                     callback(false);    //already existing name, so error
                 }
                 else
-                {                    
+                {          
+                    callback(true);     //new name, registerd, good to go..          
                     socketFromClient.userName = data;   //yeah, you could create a new property like this by assigning value along.
                     usersArray[socketFromClient.userName]=socketFromClient; 
-                    console.log("SUCCESS: Received user name registered");
-                    callback(true);     //new name, registerd, good to go..
+                    console.log("SUCCESS: Received user name registered => " + Object.keys(usersArray));
+                    updateOnlineUsers();    //notify client about updated list..                    
                 }
             }
         );
@@ -80,7 +81,18 @@ socketServer.on(
             function()
             {
                 console.log("Socket disconnected");
+                if (!socketFromClient.userName) return; //May be user quit before entering userName
+                delete usersArray[socketFromClient.userName];
+                updateOnlineUsers();    //notify client about updated list..
             }
         );
+
+        function updateOnlineUsers()
+        {
+            socketServer.emit(
+                "Online Users Listing Event",   //some name for this event from server
+                Object.keys(usersArray)
+            );
+        }
     }
 );

@@ -58,7 +58,22 @@
                     $("#userNameID").val("");
                     return false;
                 }                    
-            );    
+            );  
+            
+            //ONLINE USERS LISTING EVENT
+            socketClient.on(
+                "Online Users Listing Event",
+                function(usersNameArray)
+                {
+                    console.log("emitting online users..")
+                    $("#onlineUsersID").html("");
+                    for (i=0; i < usersNameArray.length; i++)
+                    {
+                        var newliElement = $("<li>", { "class": "list-group-item" }).text(usersNameArray[i]);     
+                        $("#onlineUsersID").append(newliElement);
+                    }
+                }                
+            );
 
         }
   );
