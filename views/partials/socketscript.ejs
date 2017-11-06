@@ -7,6 +7,7 @@
             //2. Initialize 
             var socketClient = io();            
             $("#chatWindow").hide();  
+            var currentUserName = "Anonymous";
 
             //3. When form button is submitted 
             $("#messageForm").submit(
@@ -26,11 +27,22 @@
             //4. Receive if any broadcast event message from server
             socketClient.on(
                 "Broadcast Event",
-                function(receivedMessage)
+                function(receivedData)
                 {
                     //4.1 Update received message in our page
-                    var newliElement = $("<li>", { "class": "list-group-item" }).text(receivedMessage);     
-                    $("#messagesID").append(newliElement);                  //append to ul element in our page
+                    console.log("Current User: " + currentUserName);
+                    console.log("Sender Name: " + receivedData.senderName);
+                    if (currentUserName === receivedData.senderName)
+                    {
+                        var formattedText = "<p align='right'>" + "<b>" + receivedData.senderName + ":</b> " + receivedData.message + "</p>";     
+                    }
+                    else
+                    {
+                        var formattedText = "<p align='left'>" + "<b>" + receivedData.senderName + ":</b> " + receivedData.message + "</p>";     
+                    }
+                    console.log("Formatted Text:",formattedText);
+                    //var newliElement = $("<li >", { "class": "list-group-item" }).append(formattedText);
+                    $("#messagesID").append(formattedText);                  //append to ul element in our page
                 }
             );    
 
@@ -38,16 +50,17 @@
             $("#userForm").submit(  //this to happen once user presses submit in user form..
                 function()
                 {
+                    currentUserName =  $("#userNameID").val();
                     socketClient.emit(
                         "New User Validation Event",    //agreed event name
-                        $("#userNameID").val(),         //entered user name to be sent
+                        currentUserName,         //entered user name to be sent
                         function(validationResult)
                         {
                             if (validationResult)   //good to go, show chat window
                             {
                                 $("#userWindow").hide();    //why would we still ask him another user name
-                                $("#chatWindow").show();                                    
-                                console.log("New user name registered");
+                                $("#chatWindow").show();                                                                   
+                                console.log("New user name registered: " + currentUserName);
                             }
                             else
                             {
