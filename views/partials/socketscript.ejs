@@ -14,7 +14,13 @@
                 function()
                 {
                     //4. Emit socket with "New Message Event" event name and actual new message
-                    socketClient.emit( "New Message Event", $("#newMessageID").val());
+                    socketClient.emit( "New Message Event", $("#newMessageID").val(),
+                        function(anyServerNotification)
+                        {
+                            $("#messagesID").append("<p align='right'>" +  anyServerNotification + "</p>");
+                            scrollCorrect();
+                        }
+                    );
 
                     //5. Clear the new message in client form to enable user to enter new message
                     $("#newMessageID").val("");
@@ -43,6 +49,8 @@
                     console.log("Formatted Text:",formattedText);
                     //var newliElement = $("<li >", { "class": "list-group-item" }).append(formattedText);
                     $("#messagesID").append(formattedText);                  //append to ul element in our page
+
+                    scrollCorrect();
                 }
             );    
 
@@ -59,7 +67,8 @@
                             if (validationResult)   //good to go, show chat window
                             {
                                 $("#userWindow").hide();    //why would we still ask him another user name
-                                $("#chatWindow").show();                                                                   
+                                $("#chatWindow").show();  
+                                $("#newMessageID").focus();                                                               
                                 console.log("New user name registered: " + currentUserName);
                             }
                             else
@@ -87,6 +96,33 @@
                     }
                 }                
             );
+
+            //WHISPER EVENT: SOMEONE SENT PRIVATE MSG TO ME ;)
+            socketClient.on(
+                "Whisper Event",
+                function(senderDetails)
+                {
+                    var formattedText = "<p align='left' class='whisper'>" + "<b>" + senderDetails.senderName + "(private):</b> " + senderDetails.senderPrivateMessage + "</p>";     
+                    $("#messagesID").append(formattedText);
+                    scrollCorrect();
+                }
+            );
+
+            //PRIVATE EVENT: SERVER ACKNOWLEDGMENT OF MY PRIVATE MSG
+            socketClient.on(
+                "Private Event",
+                function(details)
+                {
+                    var formattedText = "<p align='right' class='whisper'>" + "<b>" + details.receiverName + "(private):</b> " + details.senderPrivateMessage + "</p>";     
+                    $("#messagesID").append(formattedText);
+                    scrollCorrect();
+                }
+            );
+
+            function scrollCorrect()
+            {
+                $("#chatWrap").scrollTop($("#messagesID").outerHeight());
+            }            
 
         }
   );

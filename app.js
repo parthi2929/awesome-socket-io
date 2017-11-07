@@ -41,15 +41,65 @@ socketServer.on(
     {
         console.log("A new socket connected");
 
-        //5.1.1 RECEIVING EVENT FROM CLIENT
+        //5.1.1 RECEIVING MESSAGE EVENT FROM CLIENT
         socketFromClient.on(
             "New Message Event",
-            function(newMessage)
+            function(newMessage, callback)
             {
                 console.log("New Message Received from Client: " + newMessage);
+                newMessage = newMessage.trim();
+                if (newMessage.substr(0,1) === "@") //if raw msg contains @, its a private
+                {
+                    //IF ITS PRIVATE, WE HAVE TO COMMUNICATE TO SENDER AND RECIPIENT ONLY..
+                    newMessage = newMessage.substr(1);
+                    var delimiter = newMessage.indexOf(" ");    //detect 1st space occurance
+                    
+                    if (delimiter !== -1)    //there is a 1st space occurance
+                    {
 
-                //5.1.2 BROADCAST BACK TO ALL CLIENTS INCL ONE THAT SENT IT
-                socketServer.emit("Broadcast Event", { senderName: socketFromClient.userName, message: newMessage});
+                        var intendedReceiverName = newMessage.substr(0,delimiter);  
+                        var intendedPrivateMessage = newMessage.substr(delimiter+1);
+                        console.log("Intended Receiver Name: " + intendedReceiverName);
+                        if (intendedReceiverName in usersArray)
+                        {
+                            //Whisper to intended receiver via his socket from usersArray
+                            var intendedReceiverSocket = usersArray[intendedReceiverName];
+                            intendedReceiverSocket.emit("Whisper Event", 
+                                {   
+                                    
+                                    senderName: socketFromClient.userName , 
+                                    senderPrivateMessage: intendedPrivateMessage
+                                }
+                            );
+
+                            //Notify Sender in his chat box alone instead of broadcast
+                            socketFromClient.emit("Private Event",
+                                {
+                                    receiverName: intendedReceiverName,
+                                    senderPrivateMessage: intendedPrivateMessage
+                                }
+                            );
+
+                            console.log("Whispered");
+
+                        }
+                        else
+                        {
+                            callback("Server: Ahem Ahem. Intended receiver not online");
+                        }
+
+                    }
+                    else
+                    {
+                        callback("Server: Ahem, you forgot to write private message");
+                    }
+
+                }
+                else
+                {
+                    //5.1.2 BROADCAST BACK TO ALL CLIENTS INCL ONE THAT SENT IT
+                    socketServer.emit("Broadcast Event", { senderName: socketFromClient.userName, message: newMessage});           
+                }
 
             }
         );

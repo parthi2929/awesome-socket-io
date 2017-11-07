@@ -4,22 +4,31 @@
         <div class="row justify-content-center">
             <!-- MESSAGE DECK -->
             <div id="messageDeckID" class="col-sm-6 bg-inverse text-dark"><br><br>
-                
+
                 <!-- <h3 class="text-center text-white"><%=headline%></h3> -->
-                <div class="card bg-faded">  <!-- card is a bootstrap element -->
-                    <div id="messagesID"></div>
+                <div class="panel-body bg-faded">  <!-- card is a bootstrap element -->
+                    <div id="chatWrap" style="border-radius: 10px; 
+                    background: #F0E0B0; min-height: 200px;max-height: 200px; overflow-y: scroll;">
+                        <div id="messagesID"></div>  
+                    </div>                  
                 </div><br>
+                
 
                 <form id="messageForm" role="form" action="#">
                     <div class="row">
                         <div class="col-sm-8">
-                            <input id="newMessageID" class="form-control" placeholder="Enter your message" autofocus></input>
+                            <input id="newMessageID" class="form-control" placeholder="Enter your message"></input>
                         </div>
                         <div class="col-sm-2">
                             <button type="submit"  id="sendButtonID" class="btn btn-primary">Send</button>                
                         </div>  
                     </div>
-                </form><br>
+                </form>
+
+                <div class="row text-white">
+                        <p>Please use @username to PM particular user</p>
+                </div>                                
+                <br>
             </div>
 
             <!-- ONLINE USERS -->
